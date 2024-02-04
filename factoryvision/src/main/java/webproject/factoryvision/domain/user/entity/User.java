@@ -11,6 +11,7 @@ import webproject.factoryvision.global.entity.BaseEntity;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "users")
 public class User extends BaseEntity {
 
     @Id
