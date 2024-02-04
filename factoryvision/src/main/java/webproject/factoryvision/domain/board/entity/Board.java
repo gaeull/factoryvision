@@ -16,7 +16,7 @@ import webproject.factoryvision.global.entity.BaseEntity;
 public class Board extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

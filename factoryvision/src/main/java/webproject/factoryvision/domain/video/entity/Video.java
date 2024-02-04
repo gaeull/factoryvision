@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class Video extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "fell_time")
