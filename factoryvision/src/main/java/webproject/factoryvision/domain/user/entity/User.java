@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import lombok.*;
+import webproject.factoryvision.domain.user.dto.UpdateUserDto;
 import webproject.factoryvision.global.entity.BaseEntity;
 
 @Entity
@@ -31,5 +32,15 @@ public class User extends BaseEntity {
     private Role role;
 
     private String profilePhoto;
+
+    public void update(UpdateUserDto request) {
+        this.password = request.getPassword();
+        this.nickname = request.getNickname();
+        this.phone = request.getPhone();
+        this.email = request.getEmail();
+        this.name = request.getName();
+        this.userId = request.getUserId();
+        this.profilePhoto = request.getProfilePhoto();
+    }
 
 }
