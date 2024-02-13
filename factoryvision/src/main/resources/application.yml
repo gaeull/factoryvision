@@ -7,7 +7,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+#      ddl-auto: create
+      ddl-auto: update
       dialect: org.hibernate.dialect.PostgreSQL14Dialect
     properties:
       hibernate:
@@ -20,3 +21,7 @@ logging.level:
 
 server:
   port: 8080
+
+jwt:
+  issuer: moonga10@naver.com
+  secretKey: secretKey
