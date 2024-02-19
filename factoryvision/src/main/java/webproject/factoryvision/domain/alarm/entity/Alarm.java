@@ -22,7 +22,11 @@ public class Alarm extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    private User userId;
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Column(name = "user_info")
+    private String userInfo;
 
     @Column(name = "user_name")
     private String name;
