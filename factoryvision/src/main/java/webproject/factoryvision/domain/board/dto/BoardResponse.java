@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateBoardRequest {
+public class BoardResponse {
+    private Long id;
     private String title;
     private String content;
+    private Long userId;
 }
