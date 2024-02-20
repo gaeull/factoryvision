@@ -64,7 +64,7 @@ public class BoardController {
 
     // user_id로 검색 기능
     @GetMapping("/search/userId/{userId}")
-    public Page<BoardResponse> searchByUserId(@PathVariable Long userId, @PageableDefault(sort = "id", direction = Sort.Direction.ASC)Pageable pageable) {
+    public Page<BoardResponse> searchByUserId(@PathVariable String userId, @PageableDefault(sort = "id", direction = Sort.Direction.ASC)Pageable pageable) {
         return boardService.searchByUserId(userId, pageable);
     }
 

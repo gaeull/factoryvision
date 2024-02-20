@@ -1,8 +1,6 @@
 package webproject.factoryvision.domain.user.service;
 
 import lombok.Builder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 //import org.springframework.security.authentication.AuthenticationManager;
 //import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -12,9 +10,7 @@ import webproject.factoryvision.domain.user.entity.User;
 import webproject.factoryvision.domain.user.mapper.UserMapper;
 import webproject.factoryvision.domain.user.repository.UserRepository;
 
-import java.time.Duration;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Builder
@@ -24,6 +20,11 @@ public class UserService {
     private final UserMapper userMapper;
 //    private final TokenProvider tokenProvider;
 //    private final AuthenticationManager authenticationManager;
+
+
+    public User getUserByUserId(String userId) {
+        return userRepository.findByUserId(userId);
+    }
 
     public List<UserDto> getAllUsers() {
         List<User> userList = userRepository.findAll();
