@@ -3,6 +3,7 @@ package webproject.factoryvision.domain.alarm.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import webproject.factoryvision.domain.alarm.dto.AlarmDto;
 import webproject.factoryvision.domain.alarm.dto.savedAlarmDto;
@@ -12,13 +13,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("factoryvision/emergency")
+@RequestMapping("/factoryvision/emergency")
 public class AlarmController {
 
     private final AlarmService alarmService;
 
     // 호출 알림 조회
     @GetMapping()
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public List<AlarmDto> getAllAlarms() {
         return alarmService.getAllAlarms();
     }

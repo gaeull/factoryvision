@@ -8,7 +8,7 @@ import webproject.factoryvision.domain.board.service.CommentService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("factoryvision/board/")
+@RequestMapping("/factoryvision/board/")
 public class CommentController {
 
     private final CommentService commentService;

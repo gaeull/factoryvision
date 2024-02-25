@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import webproject.factoryvision.domain.user.dto.UpdateUserDto;
 import webproject.factoryvision.global.entity.BaseEntity;
 
@@ -33,14 +34,32 @@ public class User extends BaseEntity {
 
     private String profilePhoto;
 
-    public void update(UpdateUserDto request) {
-        this.password = request.getPassword();
-        this.nickname = request.getNickname();
-        this.phone = request.getPhone();
-        this.email = request.getEmail();
-        this.name = request.getName();
-        this.userId = request.getUserId();
-        this.profilePhoto = request.getProfilePhoto();
+    public void setPassword(PasswordEncoder encoder) {
+        this.password = encoder.encode(password);
+    }
+
+    public void update(UpdateUserDto request, PasswordEncoder encoder) {
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            this.password = encoder.encode(request.getPassword());
+        }
+        if (request.getNickname() != null ) {
+            this.nickname = request.getNickname();
+        }
+        if (request.getPhone() != null ) {
+            this.phone = request.getPhone();
+        }
+        if (request.getEmail() != null ) {
+            this.email = request.getEmail();
+        }
+        if (request.getName() != null ) {
+            this.name = request.getName();
+        }
+        if (request.getUserId() != null ) {
+            this.userId = request.getUserId();
+        }
+        if (request.getProfilePhoto() != null ) {
+            this.profilePhoto = request.getProfilePhoto();
+        }
     }
 
 }
