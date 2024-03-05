@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import webproject.factoryvision.domain.board.dto.BoardRequest;
 import webproject.factoryvision.domain.board.dto.BoardResponse;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("factoryvision/board")
+@RequestMapping("/factoryvision/board")
 public class BoardController {
 
     private final BoardService boardService;
@@ -62,10 +63,10 @@ public class BoardController {
         return boardService.searchByKeyword(keyword, pageable);
     }
 
-    // user_id로 검색 기능
-    @GetMapping("/search/userId/{userId}")
-    public Page<BoardResponse> searchByUserId(@PathVariable String userId, @PageableDefault(sort = "id", direction = Sort.Direction.ASC)Pageable pageable) {
-        return boardService.searchByUserId(userId, pageable);
-    }
+//    // user_id로 검색 기능
+//    @GetMapping("/search/userId/{userId}")
+//    public Page<BoardResponse> searchByUserId(@PathVariable String userId, @PageableDefault(sort = "id", direction = Sort.Direction.ASC)Pageable pageable) {
+//        return boardService.searchByUserId(userId, pageable);
+//    }
 
 }

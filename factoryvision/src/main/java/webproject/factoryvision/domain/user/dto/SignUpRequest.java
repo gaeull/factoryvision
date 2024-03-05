@@ -8,8 +8,9 @@ import webproject.factoryvision.domain.user.entity.Role;
 
 @Getter
 @Builder
-public class SignupRequest {
+public class SignUpRequest {
     private String name;
+    private String password;
     private String nickname;
     private String phone;
     private String email;

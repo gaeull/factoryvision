@@ -16,6 +16,16 @@ spring:
         format_sql: true
     open-in-view: true
 
+  security:
+    user:
+      password: 1
+
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      timeout: 3000
+
 logging.level:
   org.hibernate.SQL: debug
 
@@ -25,3 +35,26 @@ server:
 jwt:
   issuer: moonga10@naver.com
   secretKey: secretKey
+
+#springdoc:
+#  swagger-ui:
+#    path: /swagger.html
+#    groups-order: DESC
+#  api-docs:
+#    paths-to-match:
+#      - /**
+
+springdoc:
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  paths-to-match: /**
+  swagger-ui:
+    path: /
+    display-request-duration: true
+    groups-order: desc
+    operations-sorter: alpha
+    disable-swagger-default-url: true
+  api-docs:
+    groups:
+      enabled: true
+
