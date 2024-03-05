@@ -16,6 +16,7 @@ import webproject.factoryvision.domain.user.repository.UserRepository;
 import webproject.factoryvision.domain.user.service.UserService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,19 +71,6 @@ public class BoardService {
 //        Page<Board> boardList = boardRepository.findByUserId(userId, pageable);
 //        return boardList.map(boardMapper::toDto);
 //    }
-
-    @Transactional
-    public Page<BoardResponse> searchByUserId(String userId, Pageable pageable) {
-        User user = userService.getUserByUserId(userId);
-        if (user == null) {
-            throw new IllegalArgumentException("유저 아이디에 대한 정보가 없습니다.");
-        }
-
-        Page<Board> boardList = boardRepository.findByUser_UserId(user.getUserId(), pageable);
-        return boardList.map(boardMapper::toDto);
-    }
-
-
 
 
 }

@@ -8,7 +8,12 @@ import webproject.factoryvision.domain.user.entity.Role;
 @AllArgsConstructor
 public class SignInResponse {
     private String name;
-//    Role role;
-    String token;
+    private String userId;
+    Role role;
+//    String token;
 //    private String token;
+
+    public SignInResponse() {
+
+    }
 }

@@ -8,13 +8,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import webproject.factoryvision.domain.user.dto.UpdateUserDto;
 import webproject.factoryvision.global.entity.BaseEntity;
 
+import java.io.Serializable;
+
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends BaseEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

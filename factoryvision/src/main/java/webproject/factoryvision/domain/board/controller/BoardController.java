@@ -63,10 +63,10 @@ public class BoardController {
         return boardService.searchByKeyword(keyword, pageable);
     }
 
-    // user_id로 검색 기능
-    @GetMapping("/search/userId/{userId}")
-    public Page<BoardResponse> searchByUserId(@PathVariable String userId, @PageableDefault(sort = "id", direction = Sort.Direction.ASC)Pageable pageable) {
-        return boardService.searchByUserId(userId, pageable);
-    }
+//    // user_id로 검색 기능
+//    @GetMapping("/search/userId/{userId}")
+//    public Page<BoardResponse> searchByUserId(@PathVariable String userId, @PageableDefault(sort = "id", direction = Sort.Direction.ASC)Pageable pageable) {
+//        return boardService.searchByUserId(userId, pageable);
+//    }
 
 }

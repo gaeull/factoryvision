@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/factoryvision
-    username: ${username}
-    password: ${password}
+    username: gaeul
+    password: 1234
 
   jpa:
     hibernate:
@@ -24,6 +24,7 @@ spring:
     redis:
       port: 6379
       host: localhost
+      timeout: 3000
 
 logging.level:
   org.hibernate.SQL: debug

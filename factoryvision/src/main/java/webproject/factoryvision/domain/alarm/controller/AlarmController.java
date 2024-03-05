@@ -26,9 +26,9 @@ public class AlarmController {
     }
 
     // 알람 클릭 시, 사용자 정보 저장
-    @PostMapping()
-    public ResponseEntity<Void> savedAlarmInfo(@RequestBody savedAlarmDto request) {
-        alarmService.savedAlarmInfo(request);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @PostMapping()
+//    public ResponseEntity<Void> savedAlarmInfo(@RequestBody savedAlarmDto request) {
+//        alarmService.savedAlarmInfo(request);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 }

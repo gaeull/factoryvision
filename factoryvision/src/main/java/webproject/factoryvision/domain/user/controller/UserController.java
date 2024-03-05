@@ -1,13 +1,20 @@
 package webproject.factoryvision.domain.user.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import webproject.factoryvision.domain.user.dto.*;
 //import webproject.factoryvision.domain.user.service.TokenProvider;
 //import webproject.factoryvision.domain.user.service.TokenService;
+import webproject.factoryvision.domain.user.mapper.UserMapper;
+import webproject.factoryvision.domain.user.service.UserDetailsImpl;
 import webproject.factoryvision.domain.user.service.UserService;
+import webproject.factoryvision.token.dto.ReissueTokenRequest;
+import webproject.factoryvision.token.TokenProvider;
+import webproject.factoryvision.token.dto.TokenResponse;
 
 import java.util.List;
 
@@ -17,6 +24,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final TokenProvider tokenProvider;
+    private final UserMapper userMapper;
 
     // 전체 사용자 정보 조회
 //    @PreAuthorize("hasAuthority('ADMIN')")
@@ -38,15 +47,35 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    // 로그인
-    @PostMapping("/signin")
-    public ResponseEntity<SignInResponse> login(@RequestBody SignInRequest request) {
-        SignInResponse response = userService.signIn(request);
-        return ResponseEntity.ok(response);
+    // 로그인, accesstoken, refreshtoken이 생성해서 헤더로 제공.
+    // refreshtoken은 레디스에 저장. accesstoken 만료되면, refreshtoken이용해서 accesstoken재발급에 사용됨.
+    @PostMapping("/login")
+    public TokenResponse login(@RequestBody SignInRequest request, HttpServletResponse response) {
+        SignInResponse user = userService.login(request);
+        TokenResponse token = tokenProvider.createTokenByLogin(user.getUserId(), user.getRole());//atk, rtk 생성
+        response.addHeader(tokenProvider.AUTHORIZATION_HEADER, token.getAccessToken());// 헤더에 에세스 토큰만 싣기
+        return token;
     }
 
     // 로그아웃
+    // 현 accessToken은 재사용못하게 레디스 blacklist에 저장
+    // 로그아웃 --> 레디스에 저장된 refreshToken 삭제
+    @DeleteMapping("/logout")
+    public ResponseEntity logout(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletRequest request){
+        String accessToken = tokenProvider.resolveToken(request);
+        return userService.logout(accessToken,userDetails.getUserId());
+    }
 
+    // AccessToken  재발급
+    // API호출할때마다 시큐리티필터를 통해 인증 인가를 받음. 이때 만료된 토큰인지 검증하고 만료시 만료된토큰임을 에러메세지로 보냄.
+    // 그럼 클라이언트에서 에러메세지를 확인 후, 이 api(atk 재발급)를 요청함.
+    @PostMapping("/reissue-token")
+    public TokenResponse reissueToken(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                      @RequestBody ReissueTokenRequest tokenRequest){
+        //user 정보를 이용하여 토큰 발행
+        SignUpResponse user = userMapper.toDto(userDetails.getUser());
+        return tokenProvider.reissueAtk(user.getUserId(), user.getRole(), tokenRequest.getRefreshToken());
+    }
 
     // 사용자 정보 수정
     @PostMapping("/{id}")
@@ -61,6 +90,5 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
     }
-
 
 }

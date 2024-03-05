@@ -2,6 +2,10 @@ package webproject.factoryvision.domain.user.service;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +13,9 @@ import webproject.factoryvision.domain.user.dto.*;
 import webproject.factoryvision.domain.user.entity.User;
 import webproject.factoryvision.domain.user.mapper.UserMapper;
 import webproject.factoryvision.domain.user.repository.UserRepository;
-import webproject.factoryvision.security.TokenProvider;
+import webproject.factoryvision.redis.CacheNames;
+import webproject.factoryvision.redis.RedisDao;
+import webproject.factoryvision.token.TokenProvider;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,16 +24,17 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 @Builder
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder encoder;
     private final TokenProvider tokenProvider;
+    private final RedisDao redisDao;
 
 
-    // userId별 사용자 정보 get
-    public User getUserByUserId(String userId) {
+    public Optional<User> getUserByUserId(String userId) {
         return userRepository.findByUserId(userId);
     }
 
@@ -48,7 +55,6 @@ public class UserService {
         userInfo.update(request, encoder);
     }
 
-    // 회원가입
     @Transactional
     public SignUpResponse signUp(SignUpRequest request) {
         User user = userMapper.toEntity(request);
@@ -59,26 +65,39 @@ public class UserService {
         }
 
         user.setPassword(encoder);
-
         User savedUser = userRepository.save(user);
 
         return userMapper.toDto(savedUser);
     }
 
-    // 로그인
-    @Transactional(readOnly = true)
-    public SignInResponse signIn(SignInRequest request) {
-        User user = userRepository.findByUserId(request.getUserId());
-        if (user == null) {
-            throw new IllegalArgumentException("사용자 정보가 없습니다.");
-        }
+    @Cacheable(cacheNames = CacheNames.LOGINUSER, key = "'login'+ #p0.getUserId()", unless = "#result == null")
+    @Transactional
+    public SignInResponse login(SignInRequest request) {
+        User user = userRepository.findByUserId(request.getUserId()).orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
         if (!encoder.matches(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+        return userMapper.toLoginResponse(user);
+    }
 
-        // 토큰 생성
-        String token = tokenProvider.createToken(String.format("%s", user.getId()));
-        return new SignInResponse(user.getName(), token);
+    @CacheEvict(cacheNames = CacheNames.USERBYUSERID, key = "'login'+#p1")
+    @Transactional
+    public ResponseEntity logout(String accessToken, String userId) {
+        // 레디스에 accessToken 사용못하도록 등록
+        Long expiration = tokenProvider.getExpiration(accessToken);
+
+        log.info("expiration 값: {}", expiration);
+
+        redisDao.setBlackList(accessToken, "logout", expiration);
+
+        if (redisDao.hasKey(userId)) {
+            log.info("userId키가 있는 것 까지 확인");
+            redisDao.deleteRefreshToken(userId);
+            log.info("Refresh token for user {}", userId);
+        } else {
+            throw new IllegalArgumentException("이미 로그아웃한 유저입니다.");
+        }
+        return ResponseEntity.ok("로그아웃 완료");
     }
 
     // 로그인 - 필터 사용
