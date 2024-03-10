@@ -27,7 +27,7 @@ public class SecurityConfig{
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 //    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/factoryvision/signin", "/factoryvision/signup"};
-    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/factoryvision/login", "/factoryvision/signup"};
+    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/factoryvision/login", "/factoryvision/signup", "/factoryvision/upload"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
