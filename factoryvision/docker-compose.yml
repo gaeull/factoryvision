@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - postgresdb
+      - postgres
       - redis
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
@@ -18,10 +18,8 @@ services:
     networks:
       - network
 
-
-
-  postgresdb:    
-    container_name: postgresdb
+  postgres:
+    container_name: postgres
     image: postgres:latest
     ports:
       - 5432:5432
