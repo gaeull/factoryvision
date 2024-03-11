@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "fellInfo")
+//@Table(name = "fellInfo")
 public class Video extends BaseEntity {
 
     @Id
