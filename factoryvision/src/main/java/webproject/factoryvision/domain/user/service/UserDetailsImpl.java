@@ -29,7 +29,7 @@ public class UserDetailsImpl implements UserDetails {
         String authority = role.getAuthority();
         SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
         Collection<GrantedAuthority>authorities = new ArrayList<>();
-        authorities.add(simpleGrantedAuthority); // 권한을 simpleGrantedAuthority로 추상화하여 관리함
+        authorities.add(simpleGrantedAuthority);
         return authorities;
     }
 

@@ -17,7 +17,6 @@ public class SwaggerConfig {
     public OpenAPI swaggerApi() {
         return new OpenAPI()
                 .components(new Components()
-                        // 발급받은 토큰을 스웨거에서 사용(토크을 헤더에 추가)
                         .addSecuritySchemes(SECURITY_SCHEME_NAME, new SecurityScheme()
                                 .name(SECURITY_SCHEME_NAME)
                                 .type(SecurityScheme.Type.HTTP)

@@ -22,7 +22,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new UserDetailsImpl(user, user.getUserId());
     }
 
-
     private User findByUserId(String userId) {
         return userRepository.findByUserId(userId).orElseThrow(() -> new IllegalArgumentException("not found: " + userId));
     }

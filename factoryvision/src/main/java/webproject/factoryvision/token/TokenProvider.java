@@ -24,47 +24,12 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
-@PropertySource("classpath:jwt.yml")
 //@Service
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class TokenProvider {
 
-    // [feat] Spring security + JWT 사용한 로그인 회원가입
-//    private final String secretKey;
-//    private final long expirationHours;
-//    private final String issuer;
-//
-//    public TokenProvider(
-//            @Value("${secret-key}") String secretKey,
-//            @Value("${expiration-hours}") long expirationHours,
-//            @Value("${issuer}") String issuer
-//    ) {
-//        this.secretKey = secretKey;
-//        this.expirationHours = expirationHours;
-//        this.issuer = issuer;
-//    }
-//
-//    public String createToken(String userSpecification) {
-//        return Jwts.builder()
-//                .signWith(new SecretKeySpec(secretKey.getBytes(), SignatureAlgorithm.HS256.getJcaName()))   // HS512 알고리즘을 사용하여 secretKey를 이용해 서명
-//                .setSubject(userSpecification)  // JWT 토큰 제목
-//                .setIssuer(issuer)  // JWT 토큰 발급자
-//                .setIssuedAt(Timestamp.valueOf(LocalDateTime.now()))    // JWT 토큰 발급 시간
-//                .setExpiration(Date.from(Instant.now().plus(expirationHours, ChronoUnit.HOURS)))    // JWT 토큰 만료 시간
-//                .compact(); // JWT 토큰 생성
-//    }
-//
-//    // 헤더로 받은 토큰에 담긴 정보를 가져오는 메소드
-//    public String validateTokenAndGetSubject(String token) {
-//        return Jwts.parserBuilder()
-//                .setSigningKey(secretKey.getBytes())
-//                .build()
-//                .parseClaimsJws(token)
-//                .getBody()
-//                .getSubject();
-//    }
     // Header KEY 값
     public static final String AUTHORIZATION_HEADER = "Authorization";
     // 사용자 권한 값의 KEY
@@ -75,24 +40,19 @@ public class TokenProvider {
     private static final long ACCESS_TOKEN_TIME = 1000 * 60 * 30L; // 30분
     private static final long REFRESH_TOKEN_TIME = 1000 * 60 * 60 * 24 * 7L;// 7일
 
-    @Value("${secret-key}")
+    @Value("${jwt.secretKey}")
     private String secretKey;
 
-    //HMAC-SHA 키를 생성
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-
 
     private final UserDetailsService userDetailsService;
     private final RedisDao redisDao;
 
-
-    // HMAC-SHA 키를 생성하는 데 사용되는 Base64 인코딩된 문자열을 디코딩하여 키를 초기화하는 용도로 사용
-    // 의존성 주입이 이루어진 후 초기화를 수행하는 어노테이션
     @PostConstruct
     public void init() {
-        byte[] bytes = Base64.getDecoder().decode(secretKey);// Base64로 인코딩된 값을 시크릿키 변수에 저장한 값을 디코딩하여 바이트 배열로 변환
-        key = Keys.hmacShaKeyFor(bytes); //디코팅된 바이트 배열을 기반으로 HMAC-SHA 알고리즘을 사용해서 Key객체로 반환, 이를 key 변수에 대입
+        byte[] bytes = Base64.getDecoder().decode(secretKey);
+        key = Keys.hmacShaKeyFor(bytes);
     }
 
     // Header 에서 토큰 가져오기
@@ -108,8 +68,8 @@ public class TokenProvider {
     private String createToken(String userId, Role role, Long tokenExpireTime) {
         Date date = new Date();
         return BEARER_PREFIX + Jwts.builder()
-                .claim(AUTHORIZATION_KEY, role)// JWT에 사용자 역할 정보를 클레임(claim)으로 추가
-                .setSubject(userId) //JWT의 주제(subject)를 userId로 설정
+                .claim(AUTHORIZATION_KEY, role)
+                .setSubject(userId)
                 .setIssuedAt(date)
                 .setExpiration(new Date(date.getTime() + tokenExpireTime))
                 .signWith(key, SignatureAlgorithm.HS256)

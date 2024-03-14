@@ -18,7 +18,6 @@ import webproject.factoryvision.token.JwtAuthenticationFilter;
 @EnableMethodSecurity
 public class SecurityConfig{
 
-    // 패스워드 암호화
     @Bean
     public BCryptPasswordEncoder PasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -34,12 +33,12 @@ public class SecurityConfig{
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests ->
-                        requests.requestMatchers(allowedUrls).permitAll()   // 권한 확인을 하지 않는 uri
-                                .anyRequest().authenticated()   // 그 외의 요청은 인증 필요
+                        requests.requestMatchers(allowedUrls).permitAll()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )	// 세션을 사용하지 않으므로 STATELESS 설정
+                )
                 .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
                 .build();
     }
