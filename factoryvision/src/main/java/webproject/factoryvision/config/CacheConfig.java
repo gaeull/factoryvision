@@ -25,22 +25,20 @@ public class CacheConfig {
                 .serializeValuesWith(
                         RedisSerializationContext
                                 .SerializationPair
-                                .fromSerializer(new GenericJackson2JsonRedisSerializer())// value Serializer 변경
+                                .fromSerializer(new GenericJackson2JsonRedisSerializer())
                 );
 
-        //redisCacheConfigMap은 Redis 캐시의 구성 정보를 담는 맵입니다.
         Map<String, RedisCacheConfiguration> redisCacheConfigMap = new HashMap<>();
 
         redisCacheConfigMap.put(
                 CacheNames.USERBYUSERNAME,
-                defaultConfig.entryTtl(Duration.ofHours(4)) //entryTtl()을 호출하여 캐시 항목의 만료 시간(TTL)을 설정합니다.  캐시 수명 4시간
+                defaultConfig.entryTtl(Duration.ofHours(4))
         );
 
-        // ALLUSERS에 대해서만 다른 Serializer 적용
         redisCacheConfigMap.put(
                 CacheNames.ALLUSERS,
                 defaultConfig.entryTtl(Duration.ofHours(4))
-                        .serializeValuesWith( //serializeValuesWith()를 호출하여 값을 직렬화하는 방식을 설정합니다.
+                        .serializeValuesWith(
                                 RedisSerializationContext
                                         .SerializationPair
                                         .fromSerializer(new JdkSerializationRedisSerializer())

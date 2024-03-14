@@ -38,16 +38,7 @@ server:
   port: 8080
 
 jwt:
-  issuer: moonga10@naver.com
-  secretKey: secretKey
-
-#springdoc:
-#  swagger-ui:
-#    path: /swagger.html
-#    groups-order: DESC
-#  api-docs:
-#    paths-to-match:
-#      - /**
+  secretKey: ${SECRET_KEY}
 
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
