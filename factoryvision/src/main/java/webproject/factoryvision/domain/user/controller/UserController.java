@@ -1,5 +1,6 @@
 package webproject.factoryvision.domain.user.controller;
 
+import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,14 +11,18 @@ import org.springframework.web.bind.annotation.*;
 import webproject.factoryvision.domain.user.dto.*;
 //import webproject.factoryvision.domain.user.service.TokenProvider;
 //import webproject.factoryvision.domain.user.service.TokenService;
+import webproject.factoryvision.domain.user.entity.User;
 import webproject.factoryvision.domain.user.mapper.UserMapper;
+import webproject.factoryvision.domain.user.repository.UserRepository;
 import webproject.factoryvision.domain.user.service.UserDetailsImpl;
 import webproject.factoryvision.domain.user.service.UserService;
+import webproject.factoryvision.exception.EntityNotFoundException;
 import webproject.factoryvision.token.dto.ReissueTokenRequest;
 import webproject.factoryvision.token.TokenProvider;
 import webproject.factoryvision.token.dto.TokenResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +32,7 @@ public class UserController {
     private final UserService userService;
     private final TokenProvider tokenProvider;
     private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
     // 전체 사용자 정보 조회
 //    @PreAuthorize("hasAuthority('ADMIN')")
@@ -98,6 +104,21 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
+    }
+
+    // 토큰에서 유저 정보 가져오기
+    @GetMapping("/tokenInfo")
+    @Operation(summary = "토큰에서 유저 정보 가져오기", description = "request body에 토큰 담기")
+    public Long getUserIdFromToken(@RequestParam("token") String token) {
+        Claims claims = tokenProvider.getUserInfoFromToken(token);
+        String subject = claims.getSubject();
+        Optional<User> User = userRepository.findByUserId(subject);
+
+        if (User.isPresent()) {
+            return User.get().getId();
+        } else {
+            throw new EntityNotFoundException("유저 정보가 없습니다.");
+        }
     }
 
 }
