@@ -2,6 +2,7 @@ package webproject.factoryvision.domain.board.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/factoryvision/board")
+@CrossOrigin
+@Slf4j
 public class BoardController {
 
     private final BoardService boardService;
@@ -42,7 +45,6 @@ public class BoardController {
     @GetMapping("/{id}")
     @Operation(summary = "게시글 상세 조회(id로)", description = "파라미터 id에 열람하고싶은 게시글id 입력 --> 게시글id, 제목, 내용, 사용자id, 사용자이름, 게시글작성일 출력")
     public ResponseEntity<BoardResponse> getBoardDetails(@PathVariable Long id) {
-
         BoardResponse board = boardService.getBoardDetails(id);
         return board != null ? ResponseEntity.ok(board) : ResponseEntity.notFound().build();
     }

@@ -39,7 +39,8 @@ public class UserController {
     // 사용자 id별 정보 조회
     @GetMapping("/userInfo/{id}")
     @Operation(summary = "특정 사용자 정보 조회(id로 구분)")
-    public GetUserInfoResponse getUserInfoByUserId(Long id) {
+    public GetUserInfoResponse getUserInfoByUserId(@PathVariable Long id) {
+
         return userService.getUserById(id);
     }
 
