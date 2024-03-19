@@ -1,6 +1,7 @@
 package webproject.factoryvision.domain.board.service;
 
 import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Builder
+@Slf4j
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -42,7 +44,17 @@ public class BoardService {
 
     public List<BoardResponse> findAllPosts() {
         List<Board> posts = boardRepository.findAll();
-        return posts.stream().map(boardMapper::toDto).collect(Collectors.toList());
+//        log.info("게시글 조회 결과 {} ", posts);
+//        return posts.stream().map(boardMapper::toDto).collect(Collectors.toList());
+        return posts.stream()
+                .map(board -> {
+                    BoardResponse boardResponse = boardMapper.toDto(board);
+                    if (board.getUser() != null) {
+                        boardResponse.setName(board.getUser().getName());
+                    }
+                    boardResponse.setCreatedAt(board.getCreatedAt());
+                    return boardResponse;
+                }).collect(Collectors.toList());
     }
 
    public BoardResponse getBoardDetails(Long id) {
