@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import webproject.factoryvision.domain.board.dto.BoardRequest;
 import webproject.factoryvision.domain.user.entity.User;
+import webproject.factoryvision.domain.user.repository.UserRepository;
 import webproject.factoryvision.global.entity.BaseEntity;
 
 @Entity
@@ -28,7 +29,11 @@ public class Board extends BaseEntity {
     private String content;
     private int views;
 
-    public void update(BoardRequest request) {
+    public void update(BoardRequest request, UserRepository userRepository) {
+
+        User newUser = userRepository.findById(request.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found with Id: " + request.getUserId()));
+
+        this.user = newUser;
         this.title = request.getTitle();
         this.content = request.getContent();
     }

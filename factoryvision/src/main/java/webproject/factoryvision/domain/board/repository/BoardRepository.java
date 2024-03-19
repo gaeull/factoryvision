@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    //    Optional<Board> findById(Long id);
+    Optional<Board> findById(Long id);
     Page<Board> findByTitleContaining(String keyword, Pageable pageable);
     Page<Board> findByUser_UserId(String userId, Pageable pageable);
 }
