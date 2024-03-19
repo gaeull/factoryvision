@@ -1,5 +1,6 @@
 package webproject.factoryvision.domain.board.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ public class CommentController {
 
     // 댓글 작성
     @PostMapping("{postId}/comment")
+    @Operation(summary = "댓글 작성", description = "postId 파라미터에 슷자입력, request body에 내용, 닉네임 입력")
     public ResponseEntity<Void> WriteComment(@PathVariable("postId") Long postId, CommentRequest request) {
         commentService.WriteComment(postId, request);
         return ResponseEntity.ok().build();
@@ -22,6 +24,7 @@ public class CommentController {
 
     // 댓글 삭제
     @DeleteMapping("{postId}/comment")
+    @Operation(summary = "댓글 삭제")
     public ResponseEntity<Void> DeleteComment(@PathVariable("postId") Long postId, Long commentId) {
         commentService.DeleteComment(commentId);
         return ResponseEntity.ok().build();

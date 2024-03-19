@@ -1,5 +1,6 @@
 package webproject.factoryvision.domain.alarm.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class AlarmController {
 
     // 호출 알림 조회
     @GetMapping()
+    @Operation(summary = "알림 호출한 사용자 정보 조회", description = "알람id, 사용자id, 사용자이름, 사용자전화번호 출력")
 //    @PreAuthorize("hasAuthority('ADMIN')")
     public List<AlarmDto> getAllAlarms() {
         return alarmService.getAllAlarms();
