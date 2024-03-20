@@ -27,6 +27,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/factoryvision")
+@CrossOrigin
 public class UserController {
 
     private final UserService userService;
