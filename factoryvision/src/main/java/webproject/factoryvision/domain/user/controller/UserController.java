@@ -109,8 +109,13 @@ public class UserController {
 
     // 토큰에서 유저 정보 가져오기
     @GetMapping("/tokenInfo")
-    @Operation(summary = "토큰에서 유저 정보 가져오기", description = "request body에 토큰 담기")
-    public Long getUserIdFromToken(@RequestParam("token") String token) {
+    @Operation(summary = "토큰에서 유저 정보 가져오기", description = "request 헤더에서 토큰 추출해서 사용자id 출력")
+    public Long getUserIdFromToken(HttpServletRequest request) {
+        String token = tokenProvider.resolveToken(request);
+        if (token == null) {
+            throw new IllegalArgumentException("토큰이 유효하지 않습니다.");
+        }
+
         Claims claims = tokenProvider.getUserInfoFromToken(token);
         String subject = claims.getSubject();
         Optional<User> User = userRepository.findByUserId(subject);
