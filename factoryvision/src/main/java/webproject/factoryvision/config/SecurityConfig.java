@@ -3,9 +3,7 @@ package webproject.factoryvision.config;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.catalina.filters.CorsFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,7 +17,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import webproject.factoryvision.token.JwtAuthenticationFilter;
+import webproject.factoryvision.domain.token.JwtAuthenticationFilter;
 
 
 @RequiredArgsConstructor
@@ -34,10 +32,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     }
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    //
-    @Autowired
-    private CorsFilter corsFilter;
-//    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/factoryvision/signin", "/factoryvision/signup"};
+    private final CorsFilter corsFilter;
     private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/factoryvision/login", "/factoryvision/signup", "/factoryvision/upload"};
 
     @Bean
