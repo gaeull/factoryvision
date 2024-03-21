@@ -1,10 +1,9 @@
 package webproject.factoryvision.domain.board.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -19,7 +18,7 @@ import webproject.factoryvision.domain.board.repository.BoardRepository;
 import webproject.factoryvision.domain.user.repository.UserRepository;
 import webproject.factoryvision.domain.user.service.UserService;
 import webproject.factoryvision.exception.UnauthorizedException;
-import webproject.factoryvision.token.TokenProvider;
+import webproject.factoryvision.domain.token.TokenProvider;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @Builder
 @Slf4j
+@RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -35,16 +35,6 @@ public class BoardService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
-
-    @Autowired
-    public BoardService(BoardRepository boardRepository, BoardMapper boardMapper, UserService userService, UserRepository userRepository, TokenProvider tokenProvider) {
-        this.boardRepository = boardRepository;
-        this.boardMapper = boardMapper;
-        this.userService = userService;
-        this.userRepository = userRepository;
-        this.tokenProvider = tokenProvider;
-    }
-
 
     @Transactional
     public void post(BoardRequest request) {

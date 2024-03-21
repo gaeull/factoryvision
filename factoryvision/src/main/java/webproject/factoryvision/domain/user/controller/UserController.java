@@ -17,9 +17,9 @@ import webproject.factoryvision.domain.user.repository.UserRepository;
 import webproject.factoryvision.domain.user.service.UserDetailsImpl;
 import webproject.factoryvision.domain.user.service.UserService;
 import webproject.factoryvision.exception.EntityNotFoundException;
-import webproject.factoryvision.token.dto.ReissueTokenRequest;
-import webproject.factoryvision.token.TokenProvider;
-import webproject.factoryvision.token.dto.TokenResponse;
+import webproject.factoryvision.domain.token.dto.ReissueTokenRequest;
+import webproject.factoryvision.domain.token.TokenProvider;
+import webproject.factoryvision.domain.token.dto.TokenResponse;
 
 import java.util.List;
 import java.util.Optional;

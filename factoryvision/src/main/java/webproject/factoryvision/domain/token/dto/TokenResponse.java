@@ -1,4 +1,4 @@
-package webproject.factoryvision.token.dto;
+package webproject.factoryvision.domain.token.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;

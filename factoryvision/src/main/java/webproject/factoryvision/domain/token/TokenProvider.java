@@ -1,4 +1,4 @@
-package webproject.factoryvision.token;
+package webproject.factoryvision.domain.token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,13 +17,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import webproject.factoryvision.domain.user.entity.Role;
 import webproject.factoryvision.redis.RedisDao;
-import webproject.factoryvision.token.dto.TokenResponse;
+import webproject.factoryvision.domain.token.dto.TokenResponse;
 
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
-//@Service
 @Slf4j
 @Component
 @RequiredArgsConstructor

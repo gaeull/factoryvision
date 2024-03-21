@@ -1,7 +1,5 @@
 package webproject.factoryvision.domain.board.service;
 
-import jakarta.persistence.Access;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +9,8 @@ import org.springframework.http.ResponseEntity;
 import webproject.factoryvision.domain.board.controller.BoardController;
 import webproject.factoryvision.domain.board.dto.BoardRequest;
 import webproject.factoryvision.domain.board.repository.BoardRepository;
-import webproject.factoryvision.domain.user.entity.User;
-import webproject.factoryvision.domain.user.repository.UserRepository;
-import webproject.factoryvision.domain.user.service.UserDetailsImpl;
-import webproject.factoryvision.domain.user.service.UserService;
-import webproject.factoryvision.token.TokenProvider;
+import webproject.factoryvision.domain.token.TokenProvider;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 

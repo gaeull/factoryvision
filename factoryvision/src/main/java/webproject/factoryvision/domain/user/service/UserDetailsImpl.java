@@ -1,5 +1,6 @@
 package webproject.factoryvision.domain.user.service;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,16 +13,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+// logout, reissueToken api 사용 시, 사용되는 user 객체 정의
 public class UserDetailsImpl implements UserDetails {
     private User user;
     private String userId;
-
-    public UserDetailsImpl(User user, String userId) {
-        this.user = user;
-        this.userId = userId;
-    }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

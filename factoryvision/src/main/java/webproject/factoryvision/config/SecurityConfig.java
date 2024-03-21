@@ -11,22 +11,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import webproject.factoryvision.token.JwtAuthenticationFilter;
+import webproject.factoryvision.domain.token.JwtAuthenticationFilter;
 
-@Configuration
 @RequiredArgsConstructor
 @EnableMethodSecurity
-@EnableWebMvc
-public class SecurityConfig implements WebMvcConfigurer {
+@Configuration
+public class SecurityConfig {
 
     @Bean
     public BCryptPasswordEncoder PasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 //    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/factoryvision/signin", "/factoryvision/signup"};
@@ -47,11 +42,4 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .build();
     }
 
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3002")
-                .allowedMethods("OPTIONS","GET","POST","PUT","DELETE");
-    }
 }
