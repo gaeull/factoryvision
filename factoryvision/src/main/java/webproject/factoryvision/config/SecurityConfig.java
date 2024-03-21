@@ -14,13 +14,14 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import webproject.factoryvision.token.JwtAuthenticationFilter;
 
-@Configuration
+
 @RequiredArgsConstructor
 @EnableMethodSecurity
 @EnableWebMvc
@@ -31,7 +32,6 @@ public class SecurityConfig implements WebMvcConfigurer {
     public BCryptPasswordEncoder PasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     //

@@ -1,6 +1,8 @@
 package webproject.factoryvision.domain.video.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,14 +14,10 @@ import webproject.factoryvision.domain.video.dto.FlaskResponse;
 
 @RestController
 @RequestMapping("/factoryvision")
+@RequiredArgsConstructor
 public class VideoController {
 
     private final ClientUtil clientUtil;
-
-    @Autowired
-    public VideoController(ClientUtil clientUtil) {
-        this.clientUtil = clientUtil;
-    }
 
     @PostMapping("/upload")
     @Operation(summary = "ai서버로 쓰러짐 감지할 영상 업로드", description = "fileName은 text로 file은 File로 영상 첨부")

@@ -38,7 +38,7 @@ server:
   port: 8080
 
 jwt:
-  secretKey: ${SECRET_KEY}
+  secretKey: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
 
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8

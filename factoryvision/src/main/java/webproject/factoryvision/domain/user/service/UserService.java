@@ -6,16 +6,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import webproject.factoryvision.config.SecurityConfig;
 import webproject.factoryvision.domain.user.dto.*;
 import webproject.factoryvision.domain.user.entity.User;
 import webproject.factoryvision.domain.user.mapper.UserMapper;
 import webproject.factoryvision.domain.user.repository.UserRepository;
 import webproject.factoryvision.redis.CacheNames;
 import webproject.factoryvision.redis.RedisDao;
-import webproject.factoryvision.token.TokenProvider;
+import webproject.factoryvision.domain.token.TokenProvider;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,10 +29,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final PasswordEncoder encoder;
     private final TokenProvider tokenProvider;
     private final RedisDao redisDao;
-
+    private final SecurityConfig securityConfig;
 
     public Optional<User> getUserByUserId(String userId) {
         return userRepository.findByUserId(userId);
@@ -52,7 +51,7 @@ public class UserService {
     public void updateUser(Long id, UpdateUserDto request) {
         User userInfo = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
-        userInfo.update(request, encoder);
+        userInfo.update(request, securityConfig.PasswordEncoder());
     }
 
     @Transactional
@@ -64,7 +63,7 @@ public class UserService {
             throw new IllegalArgumentException("이미 사용 중인 아이디입니다.");
         }
 
-        user.setPassword(encoder);
+        user.setPassword(securityConfig.PasswordEncoder());
         User savedUser = userRepository.save(user);
 
         return userMapper.toDto(savedUser);
@@ -74,7 +73,7 @@ public class UserService {
     @Transactional
     public SignInResponse login(SignInRequest request) {
         User user = userRepository.findByUserId(request.getUserId()).orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
-        if (!encoder.matches(request.getPassword(), user.getPassword())) {
+        if (!securityConfig.PasswordEncoder().matches(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
         return userMapper.toLoginResponse(user);
