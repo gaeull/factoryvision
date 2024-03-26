@@ -52,6 +52,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .allowCredentials(true)
                 .allowedOriginPatterns("http://localhost:3002", "http://localhost:5002", "http://localhost:8080")
                 .allowedMethods("OPTIONS","GET","POST","PUT","DELETE")
-                .allowedHeaders("Authorization", "Content-Type");
+                .allowedHeaders("Authorization", "Content-Type")
+                .allowCredentials(true);
     }
 }
