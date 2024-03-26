@@ -2,7 +2,6 @@ package webproject.factoryvision.config;
 
 import lombok.RequiredArgsConstructor;
 
-import org.apache.catalina.filters.CorsFilter;
 import org.springframework.context.annotation.Bean;
 
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +25,7 @@ import webproject.factoryvision.domain.token.JwtAuthenticationFilter;
 @EnableWebMvc
 @CrossOrigin
 @Configuration
-public class SecurityConfig implements WebMvcConfigurer {
+public class SecurityConfig implements WebMvcConfigurer{
 
     @Bean
     public BCryptPasswordEncoder PasswordEncoder() {
@@ -34,7 +33,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     }
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final CorsConfig corsConfig;
+//    private final CorsConfig corsConfig;
     private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/factoryvision/login", "/factoryvision/signup", "/factoryvision/upload"};
 
     @Bean
@@ -50,7 +49,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 )
                 .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
                 //
-                .addFilter(corsConfig.corsFilter())
+//                .addFilter(corsConfig.corsFilter())
                 .build();
     }
 
@@ -59,10 +58,12 @@ public class SecurityConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowCredentials(true)
-                .allowedOrigins("*")
+//                .allowedOrigins("*")
+                .allowedOriginPatterns("http://localhost:3002", "http://localhost:5002", "http://localhost:8080")
                 .allowedMethods("OPTIONS","GET","POST","PUT","DELETE")
-                .allowedHeaders("*");
-                
+//                .allowedHeaders("*");
+                .allowedHeaders("Authorization", "Content-Type");
+
     }
 }
     

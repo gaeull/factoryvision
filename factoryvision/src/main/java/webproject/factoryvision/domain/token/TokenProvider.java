@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import webproject.factoryvision.domain.user.entity.Role;
+import webproject.factoryvision.domain.user.service.UserDetailsServiceImpl;
 import webproject.factoryvision.redis.RedisDao;
 import webproject.factoryvision.domain.token.dto.TokenResponse;
 
@@ -40,12 +40,13 @@ public class TokenProvider {
     private static final long REFRESH_TOKEN_TIME = 1000 * 60 * 60 * 24 * 7L;// 7일
 
     @Value("${jwt.secretKey}")
-    private String secretKey;
+    private String secretKey = "c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK";
 
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
-    private final UserDetailsService userDetailsService;
+//    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsServiceimpl;
     private final RedisDao redisDao;
 
     @PostConstruct
@@ -71,7 +72,7 @@ public class TokenProvider {
                 .setSubject(userId)
                 .setIssuedAt(date)
                 .setExpiration(new Date(date.getTime() + tokenExpireTime))
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(key, signatureAlgorithm)
                 .compact();
     }
 
@@ -85,14 +86,14 @@ public class TokenProvider {
 
     //AccessToken 재발행 + refreshToken 함께 발행
     public TokenResponse reissueAtk(String userId, Role role, String reToken) {
-        log.info("reissuedAtk의 매개변수 값인 userId: {} ", userId);
-        log.info("매개변수 reToken {} ", reToken);
+//        log.info("reissuedAtk의 매개변수 값인 userId: {} ", userId);
+//        log.info("매개변수 reToken {} ", reToken);
 
         String refreshTokenWithQuotes = redisDao.getRefreshToken(userId);
         String RedisRefreshToken = refreshTokenWithQuotes.replaceAll("^\"|\"$", "");
 
         if (!RedisRefreshToken.equals(reToken)) {
-            log.info("레디스에 저장된 reToken {} ", redisDao.getRefreshToken(userId));
+//            log.info("레디스에 저장된 reToken {} ", redisDao.getRefreshToken(userId));
             throw new IllegalArgumentException("Invalid refresh token");
         }
         String accessToken = createToken(userId, role, ACCESS_TOKEN_TIME);
@@ -129,7 +130,7 @@ public class TokenProvider {
 
     // 일반 유저 인증 객체 생성
     public Authentication createUserAuthentication(String userId) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+        UserDetails userDetails = userDetailsServiceimpl.loadUserByUsername(userId);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
     
