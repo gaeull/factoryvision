@@ -145,20 +145,18 @@ public class UserController {
     // 토큰에서 유저 정보 가져오기
     @GetMapping("/tokenInfo")
     @Operation(summary = "토큰에서 유저 정보 가져오기", description = "request 헤더에서 토큰 추출해서 사용자id 출력")
-    public Long getUserIdFromToken(HttpServletRequest request) {
-        String token = tokenProvider.resolveToken(request);
-        if (token == null) {
-            throw new IllegalArgumentException("토큰이 유효하지 않습니다.");
-        }
-
-        Claims claims = tokenProvider.getUserInfoFromToken(token);
-        String subject = claims.getSubject();
-        Optional<User> User = userRepository.findByUserId(subject);
-
-        if (User.isPresent()) {
-            return User.get().getId();
-        } else {
-            throw new EntityNotFoundException("유저 정보가 없습니다.");
+    public ResponseEntity<?> getUserIdFromToken(HttpServletRequest request) {
+        try {
+            Long userIdFromToken = userService.getUserIdFromToken(request);
+            return ResponseEntity.status(HttpStatus.OK).body(userIdFromToken);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .headers(getHeaders)
+                    .body("토큰이 유효하지 않습니다.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .headers(getHeaders)
+                    .body("유저 정보가 없습니다.");
         }
     }
 
