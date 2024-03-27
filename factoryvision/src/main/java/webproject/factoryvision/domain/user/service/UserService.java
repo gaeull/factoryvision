@@ -1,5 +1,6 @@
 package webproject.factoryvision.domain.user.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,19 +34,18 @@ public class UserService {
     private final RedisDao redisDao;
     private final SecurityConfig securityConfig;
 
-    public Optional<User> getUserByUserId(String userId) {
-        return userRepository.findByUserId(userId);
-    }
+//    public Optional<User> getUserByUserId(String userId) {
+//        return userRepository.findByUserId(userId);
+//    }
 
     // 사용자 id별 정보 조회
     public GetUserInfoResponse getUserById(Long id) {
         return userMapper.toUserInfo(userRepository.findById(id).orElse(null));
     }
 
-    public ResponseEntity<List<UserDto>> getAllUsers() {
+    public List<UserDto> getAllUsers() {
         List<User> userList = userRepository.findAll();
-        List<UserDto> userDtolist = userMapper.toUserDtolist(userList);
-        return ResponseEntity.ok(userDtolist);
+        return userMapper.toUserDtolist(userList);
     }
 
     @Transactional
@@ -73,7 +73,7 @@ public class UserService {
     @Cacheable(cacheNames = CacheNames.LOGINUSER, key = "'login'+ #p0.getUserId()", unless = "#result == null")
     @Transactional
     public SignInResponse login(SignInRequest request) {
-        User user = userRepository.findByUserId(request.getUserId()).orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
+        User user = userRepository.findByUserId(request.getUserId()).orElseThrow(() -> new EntityNotFoundException("사용자 정보가 없습니다."));
         if (!securityConfig.PasswordEncoder().matches(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
@@ -82,7 +82,7 @@ public class UserService {
 
     @CacheEvict(cacheNames = CacheNames.USERBYUSERID, key = "'login'+#p1")
     @Transactional
-    public ResponseEntity logout(String accessToken, String userId) {
+    public void logout(String accessToken, String userId) {
         // 레디스에 accessToken 사용못하도록 등록
         Long expiration = tokenProvider.getExpiration(accessToken);
 
@@ -97,7 +97,6 @@ public class UserService {
         } else {
             throw new IllegalArgumentException("이미 로그아웃한 유저입니다.");
         }
-        return ResponseEntity.ok("로그아웃 완료");
     }
 
     // 로그인 - 필터 사용
