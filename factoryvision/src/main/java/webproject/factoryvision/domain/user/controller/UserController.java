@@ -2,9 +2,11 @@ package webproject.factoryvision.domain.user.controller;
 
 import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,6 @@ import webproject.factoryvision.domain.user.mapper.UserMapper;
 import webproject.factoryvision.domain.user.repository.UserRepository;
 import webproject.factoryvision.domain.user.service.UserDetailsImpl;
 import webproject.factoryvision.domain.user.service.UserService;
-import webproject.factoryvision.exception.EntityNotFoundException;
 import webproject.factoryvision.domain.token.dto.ReissueTokenRequest;
 import webproject.factoryvision.domain.token.TokenProvider;
 import webproject.factoryvision.domain.token.dto.TokenResponse;
@@ -39,35 +40,34 @@ public class UserController {
 //    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/userInfo")
     @Operation(summary = "전체 사용자 정보 조회")
-    public List<UserDto> getAllUsers() {
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         return userService.getAllUsers();
     }
 
     // 사용자 id별 정보 조회
     @GetMapping("/userInfo/{id}")
     @Operation(summary = "특정 사용자 정보 조회(id로 구분)")
-    public GetUserInfoResponse getUserInfoByUserId(@PathVariable Long id) {
-
-        return userService.getUserById(id);
+    public ResponseEntity<GetUserInfoResponse> getUserInfoByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     // 회원가입
     @PostMapping("/signup")
     @Operation(summary = "회원가입", description = "request body에 회원정보 입력, user로 회원가입할경우 role:USER로, 정보 입력할때 값에 공백안들어가게 주의하기!!")
-    public ResponseEntity<SignUpResponse> signup(@RequestBody SignUpRequest request) {
+    public ResponseEntity<Void> signup(@RequestBody SignUpRequest request) {
         SignUpResponse response = userService.signUp(request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // 로그인, accesstoken, refreshtoken이 생성해서 헤더로 제공.
     // refreshtoken은 레디스에 저장. accesstoken 만료되면, refreshtoken이용해서 accesstoken재발급에 사용됨.
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "로그인id, 비밀번호 입력, 로그인 성공시 생성되는 accessToken 헤더에 포함시켜서 다른 api 요청하기")
-    public TokenResponse login(@RequestBody SignInRequest request, HttpServletResponse response) {
+    public ResponseEntity<TokenResponse> login(@RequestBody SignInRequest request, HttpServletResponse response) {
         SignInResponse user = userService.login(request);
         TokenResponse token = tokenProvider.createTokenByLogin(user.getUserId(), user.getRole());//atk, rtk 생성
         response.addHeader(tokenProvider.AUTHORIZATION_HEADER, token.getAccessToken());// 헤더에 에세스 토큰만 싣기
-        return token;
+        return ResponseEntity.ok(token);
     }
 
     // 로그아웃

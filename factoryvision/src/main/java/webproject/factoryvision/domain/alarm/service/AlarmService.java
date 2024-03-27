@@ -1,6 +1,7 @@
 package webproject.factoryvision.domain.alarm.service;
 
 import lombok.Builder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import webproject.factoryvision.domain.alarm.dto.AlarmDto;
 import webproject.factoryvision.domain.alarm.dto.savedAlarmDto;

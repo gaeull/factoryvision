@@ -42,9 +42,10 @@ public class UserService {
         return userMapper.toUserInfo(userRepository.findById(id).orElse(null));
     }
 
-    public List<UserDto> getAllUsers() {
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         List<User> userList = userRepository.findAll();
-        return userMapper.toUserDtolist(userList);
+        List<UserDto> userDtolist = userMapper.toUserDtolist(userList);
+        return ResponseEntity.ok(userDtolist);
     }
 
     @Transactional

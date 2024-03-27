@@ -9,5 +9,5 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AlarmMapper {
-    List<AlarmDto> toAlarmDtoList(List<Alarm> AlarmList);
+    List<AlarmDto> toAlarmDtoList(List<Alarm> alarmList);
 }

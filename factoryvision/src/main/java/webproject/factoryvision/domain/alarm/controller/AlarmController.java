@@ -23,8 +23,9 @@ public class AlarmController {
     @GetMapping()
     @Operation(summary = "알림 호출한 사용자 정보 조회", description = "알람id, 사용자id, 사용자이름, 사용자전화번호 출력")
 //    @PreAuthorize("hasAuthority('ADMIN')")
-    public List<AlarmDto> getAllAlarms() {
-        return alarmService.getAllAlarms();
+    public ResponseEntity<List<AlarmDto>> getAllAlarms() {
+        List<AlarmDto> allAlarms = alarmService.getAllAlarms();
+        return ResponseEntity.status(HttpStatus.OK).body(allAlarms);
     }
 
     // 알람 클릭 시, 사용자 정보 저장
