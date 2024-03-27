@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import webproject.factoryvision.domain.video.ClientUtil;
@@ -21,10 +23,10 @@ public class VideoController {
 //    @PostMapping( "/upload")
     @Operation(summary = "ai서버로 쓰러짐 감지할 영상 업로드", description = "fileName은 text로 file은 File로 영상 첨부")
 //    public FlaskResponse uploadVideo(@RequestBody String fileName, @RequestBody MultipartFile file) {
-    public FlaskResponse uploadVideo(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<FlaskResponse> uploadVideo(@RequestParam("file") MultipartFile file) {
         try {
-//            return clientUtil.requestToFlask(fileName, file);
-            return clientUtil.requestToFlask(file);
+            FlaskResponse flaskResponse = clientUtil.requestToFlask(file);
+            return ResponseEntity.status(HttpStatus.OK).body(flaskResponse);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

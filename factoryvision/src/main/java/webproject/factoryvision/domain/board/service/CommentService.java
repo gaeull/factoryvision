@@ -1,5 +1,6 @@
 package webproject.factoryvision.domain.board.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class CommentService {
 
     public void WriteComment(Long id, CommentRequest request) {
         Board board = boardRepository.findById(id).
-                orElseThrow(() -> new IllegalArgumentException("Target post does not exist."));
+                orElseThrow(() -> new EntityNotFoundException("게시판 정보가 없습니다."));
         Comment result = Comment.builder()
                 .content(request.getContent())
                 .nickname(request.getNickname())
