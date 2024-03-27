@@ -20,6 +20,7 @@ import webproject.factoryvision.redis.RedisDao;
 import webproject.factoryvision.domain.token.dto.TokenResponse;
 
 import java.security.Key;
+import java.security.SignatureException;
 import java.util.Base64;
 import java.util.Date;
 

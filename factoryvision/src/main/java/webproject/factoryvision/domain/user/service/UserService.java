@@ -1,6 +1,8 @@
 package webproject.factoryvision.domain.user.service;
 
+import io.jsonwebtoken.Claims;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import webproject.factoryvision.redis.CacheNames;
 import webproject.factoryvision.redis.RedisDao;
 import webproject.factoryvision.domain.token.TokenProvider;
 
+import java.security.SignatureException;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,4 +121,21 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public Long getUserIdFromToken(HttpServletRequest request) {
+        String token = tokenProvider.resolveToken(request);
+        log.info("token 정보 {} ", token);
+        if (token == null) {
+            throw new IllegalArgumentException("토큰이 유효하지 않습니다.");
+        }
+
+        Claims claims = tokenProvider.getUserInfoFromToken(token);
+        String subject = claims.getSubject();
+        Optional<User> user = userRepository.findByUserId(subject);
+
+        if (user.isPresent()) {
+            return user.get().getId();
+        } else {
+            throw new EntityNotFoundException("유저 정보가 없습니다.");
+        }
+    }
 }
