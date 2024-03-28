@@ -23,11 +23,6 @@ public class AlarmService {
     private final AlarmMapper alarmMapper;
     private final UserRepository userRepository;
 
-    public List<AlarmDto> getAllAlarms() {
-        List<Alarm> alarmList = alarmRepository.findAll();
-        return alarmMapper.toAlarmDtoList(alarmList);
-    }
-
     public void savedAlarmInfo(savedAlarmDto request) {
         Long userId = request.getUserId();
         Optional<User> userCallAlarm = userRepository.findById(userId);

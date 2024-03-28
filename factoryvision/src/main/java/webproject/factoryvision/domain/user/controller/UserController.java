@@ -1,7 +1,7 @@
 package webproject.factoryvision.domain.user.controller;
 
-import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import webproject.factoryvision.domain.user.dto.*;
@@ -24,6 +25,7 @@ import webproject.factoryvision.domain.token.dto.TokenResponse;
 import java.util.List;
 import java.util.Optional;
 
+@Tag(name = "사용자 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/factoryvision")
@@ -33,17 +35,7 @@ public class UserController {
     private final UserService userService;
     private final TokenProvider tokenProvider;
     private final UserMapper userMapper;
-    private final UserRepository userRepository;
     private final HttpHeaders getHeaders;
-
-    // 전체 사용자 정보 조회
-//    @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/userInfo")
-    @Operation(summary = "전체 사용자 정보 조회")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<UserDto> allUsers = userService.getAllUsers();
-        return ResponseEntity.status(HttpStatus.OK).body(allUsers);
-    }
 
     // 사용자 id별 정보 조회
     @GetMapping("/userInfo/{id}")
