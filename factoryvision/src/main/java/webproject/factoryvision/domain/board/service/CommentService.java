@@ -14,6 +14,7 @@ import webproject.factoryvision.domain.board.repository.BoardRepository;
 import webproject.factoryvision.domain.board.repository.CommentRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -43,7 +44,12 @@ public class CommentService {
         return comments.stream().map(commentMapper::toDto).collect(Collectors.toList());
     }
 
-    public void DeleteComment(Long commentId) {
-        commentRepository.deleteById(commentId);
+    public void DeleteComment(Long postId, Long commentId) {
+        Optional<Board> board = boardRepository.findById(postId);
+        if (board.isPresent()) {
+            commentRepository.deleteById(commentId);
+        } else {
+            throw new EntityNotFoundException("댓글에 해당되는 게시글이 없습니다.");
+        }
     }
 }

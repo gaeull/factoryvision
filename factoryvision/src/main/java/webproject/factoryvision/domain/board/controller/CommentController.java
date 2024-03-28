@@ -50,9 +50,16 @@ public class CommentController {
     @DeleteMapping("{postId}/comment")
     @Operation(summary = "댓글 삭제")
     public ResponseEntity<?> DeleteComment(@PathVariable("postId") Long postId, Long commentId) {
-        commentService.DeleteComment(commentId);
-        return ResponseEntity.status(HttpStatus.OK)
-                .headers(getHeaders)
-                .body("댓글 삭제 완료");
+        try {
+            commentService.DeleteComment(postId, commentId);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .headers(getHeaders)
+                    .body("댓글 삭제 완료");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .headers(getHeaders)
+                    .body("댓글에 해당되는 게시글이 없습니다.");
+        }
     }
+
 }

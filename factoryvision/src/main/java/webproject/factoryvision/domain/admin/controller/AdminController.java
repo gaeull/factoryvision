@@ -24,8 +24,8 @@ public class AdminController {
     private final AdminService adminService;
 
     // 전체 사용자 정보 조회
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/userInfo")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "전체 사용자 정보 조회")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> allUsers = adminService.getAllUsers();

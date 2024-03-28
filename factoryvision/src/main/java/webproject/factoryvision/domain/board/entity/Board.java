@@ -1,17 +1,15 @@
 package webproject.factoryvision.domain.board.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import webproject.factoryvision.domain.board.dto.BoardRequest;
 import webproject.factoryvision.domain.user.entity.User;
 import webproject.factoryvision.domain.user.repository.UserRepository;
 import webproject.factoryvision.global.entity.BaseEntity;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,10 +28,7 @@ public class Board extends BaseEntity {
     private int views;
 
     public void update(BoardRequest request, UserRepository userRepository) {
-
-        User newUser = userRepository.findById(request.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found with Id: " + request.getUserId()));
-
-        this.user = newUser;
+        this.user = userRepository.findById(request.getUserId()).orElseThrow(() -> new EntityNotFoundException("id에 해당하는 유저 정보가 없습니다. : " + request.getUserId()));
         this.title = request.getTitle();
         this.content = request.getContent();
     }
