@@ -7,6 +7,8 @@ import webproject.factoryvision.domain.board.dto.BoardResponse;
 import webproject.factoryvision.domain.board.dto.BoardRequest;
 import webproject.factoryvision.domain.board.entity.Board;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BoardMapper {
     @Mapping(source = "userId", target = "user.id")
@@ -14,4 +16,6 @@ public interface BoardMapper {
 
     @Mapping(source = "user.id", target = "userId")
     BoardResponse toDto(Board board);
+
+    List<BoardResponse> toBoardDtoList(List<Board> boardList);
 }

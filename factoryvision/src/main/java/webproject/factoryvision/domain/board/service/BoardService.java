@@ -42,21 +42,11 @@ public class BoardService {
     }
 
     public List<BoardResponse> findAllPosts() {
-        List<Board> posts = boardRepository.findAll();
-//        log.info("게시글 조회 결과 {} ", posts);
-//        return posts.stream().map(boardMapper::toDto).collect(Collectors.toList());
-        return posts.stream()
-                .map(board -> {
-                    BoardResponse boardResponse = boardMapper.toDto(board);
-                    if (board.getUser() != null) {
-                        boardResponse.setName(board.getUser().getName());
-                    }
-                    boardResponse.setCreatedAt(board.getCreatedAt());
-                    return boardResponse;
-                }).collect(Collectors.toList());
+        List<Board> boardList = boardRepository.findAll();
+        return boardMapper.toBoardDtoList(boardList);
     }
 
-   public BoardResponse getBoardDetails(Long id) {
+    public BoardResponse getBoardDetails(Long id) {
        return boardMapper.toDto(boardRepository.findById(id).orElse(null));
    }
 

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import webproject.factoryvision.domain.board.entity.Board;
 
 import org.springframework.data.domain.Pageable;
-import java.util.List;
 import java.util.Optional;
 
 @Repository

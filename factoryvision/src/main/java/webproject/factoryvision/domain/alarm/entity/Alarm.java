@@ -3,15 +3,13 @@ package webproject.factoryvision.domain.alarm.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import webproject.factoryvision.domain.user.entity.User;
 import webproject.factoryvision.global.entity.BaseEntity;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,9 +23,6 @@ public class Alarm extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @Column(name = "user_info")
-//    private String userInfo;
-//
     @Column(name = "user_info_id")
     private String userId;
 

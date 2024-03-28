@@ -2,7 +2,6 @@ package webproject.factoryvision.domain.admin.service;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import webproject.factoryvision.domain.alarm.dto.AlarmDto;
 import webproject.factoryvision.domain.alarm.entity.Alarm;
