@@ -1,6 +1,7 @@
 package webproject.factoryvision.domain.board.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import webproject.factoryvision.exception.UnauthorizedException;
 
 import java.util.List;
 
+@Tag(name = "게시판 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/factoryvision/board")

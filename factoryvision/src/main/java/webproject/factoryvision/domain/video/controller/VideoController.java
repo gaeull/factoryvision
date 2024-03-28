@@ -1,6 +1,7 @@
 package webproject.factoryvision.domain.video.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import webproject.factoryvision.domain.video.ClientUtil;
 import webproject.factoryvision.domain.video.dto.FlaskResponse;
 
+@Tag(name = "영상 API")
 @RestController
 @RequestMapping("/factoryvision")
 @RequiredArgsConstructor

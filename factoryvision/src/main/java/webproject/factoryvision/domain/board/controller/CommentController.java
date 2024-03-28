@@ -1,6 +1,7 @@
 package webproject.factoryvision.domain.board.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +14,7 @@ import webproject.factoryvision.domain.board.service.CommentService;
 
 import java.util.List;
 
+@Tag(name = "댓글 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/factoryvision/board/")
