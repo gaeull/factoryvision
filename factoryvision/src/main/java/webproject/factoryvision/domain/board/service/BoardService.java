@@ -41,13 +41,29 @@ public class BoardService {
         boardRepository.save(boardMapper.toEntity(request));
     }
 
+    private BoardResponse mapToBoardResponse(Board board) {
+        BoardResponse boardResponse = boardMapper.toDto(board);
+        if (board.getUser() != null) {
+            boardResponse.setName(board.getUser().getName());
+        }
+        boardResponse.setCreatedAt(board.getCreatedAt());
+        return boardResponse;
+    }
+
     public List<BoardResponse> findAllPosts() {
-        List<Board> boardList = boardRepository.findAll();
-        return boardMapper.toBoardDtoList(boardList);
+        return boardRepository.findAll().stream()
+                .map(this::mapToBoardResponse)
+                .collect(Collectors.toList());
     }
 
     public BoardResponse getBoardDetails(Long id) {
-       return boardMapper.toDto(boardRepository.findById(id).orElse(null));
+        Optional<Board> board = boardRepository.findById(id);
+        if (board.isPresent()) {
+            Board boardResponse = board.get();
+            return mapToBoardResponse(boardResponse);
+        } else {
+            return null;
+        }
    }
 
    @Transactional

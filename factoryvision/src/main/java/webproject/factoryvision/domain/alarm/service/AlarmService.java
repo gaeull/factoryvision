@@ -20,7 +20,6 @@ public class AlarmService {
     private final AlarmRepository alarmRepository;
     private final AlarmMapper alarmMapper;
     private final UserRepository userRepository;
-
     public void savedAlarmInfo(savedAlarmDto request) {
         Long userId = request.getUserId();
         Optional<User> userCallAlarm = userRepository.findById(userId);
@@ -39,5 +38,6 @@ public class AlarmService {
             throw new EntityNotFoundException("유저 아이디가 존재하지 않습니다.");
         }
     }
+
 
 }
