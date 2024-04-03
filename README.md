@@ -8,6 +8,10 @@
   - 게시판 기능으로 위험 발생을 알림
   - 비상 호출 버튼으로 위험 상황을 관리자에게 알림
 
+## 시스템 아키텍처
+<img width="721" alt="factoryvision_시스템 아키텍처" src="https://github.com/gaeull/factoryvision/assets/103443650/81b2903b-636c-469a-9cb2-f1158e88f948">
+
+
 
 ## DB ERD
 <img width="800" alt="erd" src="https://github.com/factoryvision/.github/assets/100004234/e95836d8-7124-4aaa-82e1-6668cf177b53">
