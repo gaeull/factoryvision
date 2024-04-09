@@ -1,4 +1,4 @@
-
+<img width="775" alt="시스템아키텍처_spring-data-jpa추가" src="https://github.com/gaeull/factoryvision/assets/103443650/15212023-9090-441d-9cf6-2ebfd408704e">
 # 쓰러진 사람을 감지하고 모니터링할 수 있는 웹 솔루션
 
 
@@ -9,7 +9,8 @@
   - 비상 호출 버튼으로 위험 상황을 관리자에게 알림
 
 ## 시스템 아키텍처
-<img width="721" alt="factoryvision_시스템 아키텍처" src="https://github.com/gaeull/factoryvision/assets/103443650/81b2903b-636c-469a-9cb2-f1158e88f948">
+<img width="775" alt="시스템아키텍처_spring-data-jpa추가" src="https://github.com/gaeull/factoryvision/assets/103443650/681c6dec-01dd-485f-9345-97d3e284debe">
+
 
 
 
