@@ -1,4 +1,3 @@
-<img width="775" alt="시스템아키텍처_spring-data-jpa추가" src="https://github.com/gaeull/factoryvision/assets/103443650/15212023-9090-441d-9cf6-2ebfd408704e">
 # 쓰러진 사람을 감지하고 모니터링할 수 있는 웹 솔루션
 
 
