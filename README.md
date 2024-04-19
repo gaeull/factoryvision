@@ -8,9 +8,7 @@
   - 비상 호출 버튼으로 위험 상황을 관리자에게 알림
 
 ## 시스템 아키텍처
-<img width="775" alt="시스템아키텍처_spring-data-jpa추가" src="https://github.com/gaeull/factoryvision/assets/103443650/681c6dec-01dd-485f-9345-97d3e284debe">
-
-
+<img width="765" alt="최종 시스템 아키텍처" src="https://github.com/gaeull/factoryvision/assets/103443650/57f8a45a-e2b9-4b30-8c74-35a9696d999f">
 
 
 ## DB ERD
